@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add post</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:replace="parts/common::csshead">
+</head>
+<body>
+<div th:replace="parts/navbar::navbar"></div>
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <h1 class="text-center mt-4">Adding post</h1>
+    <form method="post" class="w-75 mx-auto">
+            <div class="form-group col-lg-12 col-lg-12 mt-lg-4">
+                <label >Title</label>
+                <input type=text class="form-control" name="title" placeholder="Insert title"/>
+            </div>
+        <div class="form-group col-lg-12 col-lg-12 mx-auto mt-lg-4">
+            <label>Main text</label>
+            <input type="text" class="form-control "  name="text" placeholder="Insert text"/>
+        </div>
+        <div><input type="hidden"  th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /></div>
+        <div class="container">
+            <button type="submit" class="btn btn-primary w-100 mt-lg-4">Add new post!</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

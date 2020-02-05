@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:replace="parts/common::csshead">
+</head>
+
+<body>
+    <div th:replace="parts/navbar::navbar"></div>
+    <form th:action="@{/registration}" method="post">
+        <h1 class="text-center">Sign Up</h1>
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-5 mx-auto mt-sm-4">
+                <label for="exampleInputEmail1">Username</label>
+                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-5 mx-auto mt-sm-3">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" name="password" id="exampleInputPassword1">
+        </div>
+        <div class="col-xs-12 col-sm-5 mx-auto mt-sm-3" th:text="${message}"></div>
+        <div>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
+        </div>
+        <div class="container col-xs-12 col-sm-5" role="main">
+            <div  class="center-block text-center mt-3">
+                <input type="submit" class="btn btn-primary btn-block" value="Sign Up"/>
+            </div>
+        </div>
+    </form>
+
+
+
+</body>
+</html>

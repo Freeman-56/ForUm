@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="parts/common::common">
+</head>
+<body th:fragment="navbar">
+<nav class="navbar navbar-expand-lg navbar-light justify-content-between" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" th:href="@{/}">ForUm</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/}">Home <span class="sr-only"></span></a>
+            </li>
+        </ul>
+        <form th:unless="${#authorization.expression('isAuthenticated()')}" class="form-inline my-2 my-lg-0">
+            <a class="btn btn-outline-primary mr-1 " th:href="@{/login}" role="button">Log In</a>
+            <a class="btn btn-primary " th:href="@{/registration}" role="button">Sign Up</a>
+        </form>
+        <form th:if="${#authorization.expression('isAuthenticated()')}" action="/logout" method="post" class="form-inline my-2 my-lg-0">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="submit" value="Sign Out" class="btn btn-outline-primary mr-1"/>
+        </form>
+    </div>
+
+</nav>
+
+</body>
+</html>

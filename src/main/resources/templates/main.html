@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Main page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:replace="parts/common::csshead">
+</head>
+
+<body>
+<div th:replace="parts/navbar::navbar"></div>
+
+
+<div class="d-flex flex-row-reverse ">
+    <a th:href="@{/postAdd}" class="btn btn-success mt-2 mr-3 ">Add post</a>
+</div>
+
+<div class="list-group ">
+    <span th:each="posts : ${posts}" class=" list-group-item list-group-item align-items-start w-75 mt-2 mx-auto bg-light ">
+        <div class="d-flex justify-content-between w-100 ">
+            <a th:href="@{'/post/' + ${posts.getId()}}" class="mb-1" style="width: 900px;" ><b th:text="${posts.getTitle()}" ></b></a>
+            <small style="text-align: right" th:text="${posts.getDate()}">Date</small>
+        </div>
+        <small th:text="${posts.getAuthorName()}">This is author</small>
+    </span>
+</div>
+
+</body>
+</html>
