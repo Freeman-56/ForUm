@@ -29,6 +29,8 @@ public class CommentController {
         return "redirect:/post/{post}";
     }
 
+
+
 //    @GetMapping("/post/{post}")
 //    public String showComments(Model model){
 //        Iterable<Comment> comments = commentRepo.findAll();
