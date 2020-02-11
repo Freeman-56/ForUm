@@ -20,7 +20,8 @@
             <small style="text-align: right" th:text="${post.getDate()}" >Date</small>
         </div>
         <p class="mb-1" th:text="${post.getText()}">This is text</p>
-        <small th:text="${post.getAuthorName()}">This is author.</small>
+        <a th:href="@{'/users/' + ${post.getAuthor().getId()}}" class="text-light"><small th:text="${post.getAuthorName()}">This is author</small></a>
+<!--        <small th:text="${post.getAuthorName()}">This is author.</small>-->
     </div>
 </div>
 
@@ -28,7 +29,9 @@
     <span class="list-group-item mt-3 bg-light" th:each="comments : ${comments}">
         <div class="">
         <div class="row">
-            <div class="col" th:text="${comments.getAuthorName()}">author</div>
+            <div class="col" >
+                <a th:href="@{'/users/' + ${comments.getAuthor().getId()}}"><b th:text="${comments.getAuthorName()}">This is author</b></a>
+            </div>
             <div class="col-6 ">
                 <div class="container">
                     <div class="row">
@@ -45,7 +48,6 @@
 
 <div th:if="${#authorization.expression('isAuthenticated()')}">
     <form method="post" th:action="@{'/post/' + ${post.getId()}}">
-<!--        <input type="text" name="text" placeholder="Insert text"/>-->
         <div class="form-group mx-auto mt-lg-2 w-75">
             <label>Comment</label>
             <input type="text" class="form-control "  name="text" placeholder="Insert text"/>

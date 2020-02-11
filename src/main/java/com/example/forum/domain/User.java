@@ -17,7 +17,10 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private boolean active;
+    private String filename;
 
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private Set<Post> posts;
 
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -103,5 +106,13 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

@@ -20,7 +20,7 @@
             <a th:href="@{'/post/' + ${posts.getId()}}" class="mb-1" style="width: 900px;" ><b th:text="${posts.getTitle()}" ></b></a>
             <small style="text-align: right" th:text="${posts.getDate()}">Date</small>
         </div>
-        <small th:text="${posts.getAuthorName()}">This is author</small>
+        <a th:href="@{'/users/' + ${posts.getAuthor().getId()}}"><small th:text="${posts.getAuthorName()}">This is author</small></a>
     </span>
 </div>
 

@@ -20,13 +20,13 @@
         <input type="password" class="form-control" name="password" id="exampleInputPassword1">
     </div>
     <div>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </div>
     <div class="col-xs-12 col-sm-5 mx-auto mt-sm-3" th:if="${param.error}">
         Invalid username and(or) password.
     </div>
     <div class="container" role="main">
-        <div  class="center-block text-center mt-3">
+        <div class="center-block text-center mt-3">
             <input type="submit" class="btn btn-primary" value="Log In"/>
             <a class="btn btn-primary " th:href="@{/registration}" role="button">Sign Up</a>
         </div>
