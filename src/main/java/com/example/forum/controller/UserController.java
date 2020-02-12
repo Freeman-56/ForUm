@@ -38,30 +38,45 @@ public class UserController {
         Iterable<Post> posts = postRepo.findPostsByAuthor_Id(currentUser.getId());
         model.addAttribute("posts", posts);
         model.addAttribute("user", user);
+        model.addAttribute("currentUser", currentUser);
         return "userProfile";
     }
 
     @PostMapping("/users/{user}")
-    public String addProfileImg(@AuthenticationPrincipal User currentUser, @RequestParam("file") MultipartFile file, Model model, @PathVariable User user) throws IOException {
+    public String editProfile(@AuthenticationPrincipal User currentUser,
+                              @RequestParam(value = "file", required = false) MultipartFile file,
+                              @RequestParam(defaultValue = "", value = "password") String password,
+                              Model model, @PathVariable User user) throws IOException {
+        boolean isFile = false, isPassword = false;
+
         if(file != null) {
-            File uploadDir = new File(uploadPath);
+            if (!file.isEmpty()) {
+                File uploadDir = new File(uploadPath);
 
-            if (!uploadDir.exists())
-                uploadDir.mkdir();
+                if (!uploadDir.exists())
+                    uploadDir.mkdir();
 
-            if(currentUser.getFilename() != null)
-                new File(uploadPath + "/" + currentUser.getFilename()).delete();
+                if (currentUser.getFilename() != null)
+                    new File(uploadPath + "/" + currentUser.getFilename()).delete();
 
-            String uuidFile = UUID.randomUUID().toString();
-            String fileResultName = uuidFile + "." + file.getOriginalFilename();
+                String uuidFile = UUID.randomUUID().toString();
+                String fileResultName = uuidFile + "." + file.getOriginalFilename();
 
-            file.transferTo(new File(uploadPath + "/" + fileResultName));
+                file.transferTo(new File(uploadPath + "/" + fileResultName));
 
-            currentUser.setFilename(fileResultName);
+                currentUser.setFilename(fileResultName);
+                isFile = true;
+            }
         }
+        if(!password.equals("")) {
+            currentUser.setPassword(password);
+            isPassword = true;
+        }
+        if(isFile || isPassword)
+            userRepo.save(currentUser);
 
-        userRepo.save(currentUser);
         model.addAttribute("user", currentUser);
         return "redirect:/profile";
     }
+
 }

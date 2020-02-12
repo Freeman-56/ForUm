@@ -12,16 +12,34 @@
     <img th:src="'/img/'+ ${user.getFilename()}" width="20%" class="img-thumbnail mt-3 ml-4">
     <div class="mt-3">
         <h1 class="ml-5" th:text="${user.getUsername()}">Username</h1>
+        <form th:if="${currentUser.getUsername()} == ${user.getUsername()}" method="post" class="ml-5 " style="width: 900px;">
+            <fieldset disabled>
+                <div class="form-group">
+                    <label for="formGroupExampleInput">Username</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" th:placeholder="${user.getUsername()}">
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Password</label>
+                <input type="password" class="form-control" id="formGroupExampleInput2" th:name="password" placeholder="Enter new password">
+            </div>
+            <div class="form-group">
+                <div><input type="hidden"  th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /></div>
+                <input type="submit" class="btn btn-primary" value="Edit">
+            </div>
+        </form>
     </div>
 </div>
-<h5 class="ml-4 mt-2">Change profile's image</h5>
-<form method="post" enctype="multipart/form-data" class="mt-2 ml-4">
-    <div>
-        <input type="file" th:value="file" th:name="file">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
-        <input type="submit" value="Upload" class="btn btn-success">
-    </div>
-</form>
+<div th:if="${currentUser.getUsername()} == ${user.getUsername()}">
+    <h5 class="ml-4 mt-2">Change profile's image</h5>
+    <form  method="post" enctype="multipart/form-data" class="mt-2 ml-4">
+        <div>
+            <input type="file" name="file">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
+            <input type="submit" value="Upload" class="btn btn-success">
+        </div>
+    </form>
+</div>
 <h2 class="ml-4 mt-2" th:text="${user.getUsername()} + '\'s posts'">Posts</h2>
 <span th:each="posts : ${posts}">
 <div class="list-group">
@@ -32,6 +50,6 @@
 </div>
 
 </span>
-
+<p></p>
 </body>
 </html>
