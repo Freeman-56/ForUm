@@ -23,6 +23,12 @@
         </form>
         <form th:if="${#authorization.expression('isAuthenticated()')}" action="/logout" method="post" class="form-inline my-2 my-lg-0">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <div th:unless="${#authentication.getPrincipal() instanceof T(com.example.forum.domain.User)}"
+                 th:text="${#authentication.getPrincipal().getAttribute(&quot;email&quot;)
+                .substring(0, #authentication.getPrincipal().getAttribute(&quot;email&quot;).indexOf(&quot;@&quot;))}"
+                 class="navbar-text mr-3">OAuth2Username</div>
+            <div th:if="${#authentication.getPrincipal() instanceof T(com.example.forum.domain.User)}"
+                 th:text="${#authentication.getName()}" class="navbar-text mr-3">Username</div>
             <input type="submit" value="Sign Out" class="btn btn-outline-primary mr-1"/>
         </form>
     </div>

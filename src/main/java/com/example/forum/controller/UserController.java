@@ -4,6 +4,7 @@ import com.example.forum.domain.Post;
 import com.example.forum.domain.User;
 import com.example.forum.repository.PostRepo;
 import com.example.forum.repository.UserRepo;
+import com.example.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.UUID;
 
 @Controller
@@ -29,13 +31,20 @@ public class UserController {
 
     @Value("${upload.path}")
     private String uploadPath;
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping("/profile")
-    public String redirectProfile(@AuthenticationPrincipal User user){return "redirect:/users/" + user.getId();}
+    public String redirectProfile(@AuthenticationPrincipal Principal user){
+        User currentUser = (User) userService.loadUserByUsername(user.getName());
+        return "redirect:/users/" + currentUser.getId();
+    }
 
     @GetMapping("/users/{user}")
-    public String viewProfile(@AuthenticationPrincipal User currentUser, @PathVariable User user, Model model){
-        Iterable<Post> posts = postRepo.findPostsByAuthor_Id(currentUser.getId());
+    public String viewProfile(@AuthenticationPrincipal Principal currentPrincipal, @PathVariable User user, Model model){
+        User currentUser = (User) userService.loadUserByUsername(currentPrincipal.getName());
+        Iterable<Post> posts = postRepo.findPostsByAuthor_Id(user.getId());
         model.addAttribute("posts", posts);
         model.addAttribute("user", user);
         model.addAttribute("currentUser", currentUser);
@@ -43,12 +52,12 @@ public class UserController {
     }
 
     @PostMapping("/users/{user}")
-    public String editProfile(@AuthenticationPrincipal User currentUser,
+    public String editProfile(@AuthenticationPrincipal Principal currentPrincipal,
                               @RequestParam(value = "file", required = false) MultipartFile file,
                               @RequestParam(defaultValue = "", value = "password") String password,
                               Model model, @PathVariable User user) throws IOException {
         boolean isFile = false, isPassword = false;
-
+        User currentUser = (User) userService.loadUserByUsername(currentPrincipal.getName());
         if(file != null) {
             if (!file.isEmpty()) {
                 File uploadDir = new File(uploadPath);

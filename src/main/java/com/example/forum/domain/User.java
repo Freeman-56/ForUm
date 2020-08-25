@@ -18,6 +18,11 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
     private String filename;
+    private String oauth2Name;
+
+    private String email;
+    private String gender;
+    private String locale;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<Post> posts;
@@ -114,5 +119,37 @@ public class User implements UserDetails {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public String getOauth2Name() {
+        return oauth2Name;
+    }
+
+    public void setOauth2Name(String oauth2Name) {
+        this.oauth2Name = oauth2Name;
     }
 }

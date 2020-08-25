@@ -1,5 +1,6 @@
 package com.example.forum.service;
 
+import com.example.forum.domain.User;
 import com.example.forum.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) userRepo.findByUsername(username);
+        User userFindByUsername = userRepo.findByUsername(username);
+        User userFindByOauth2Name = userRepo.findByOauth2Name(username);
+        if(userFindByOauth2Name != null)
+            return userFindByOauth2Name;
+        else
+            return userFindByUsername;
     }
 }

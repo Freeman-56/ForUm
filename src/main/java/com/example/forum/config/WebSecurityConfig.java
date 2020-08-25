@@ -11,17 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private DataSource dataSource;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -32,12 +27,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/post/**", "/static/**").permitAll()
+                .mvcMatchers("/", "/registration", "/post/**", "/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
+                .and()
+                .oauth2Login()
+                    .loginPage("/login/oauth2")
+                .authorizationEndpoint()
+                        .baseUri("/login/oauth2/authorization")
+                    .and()
+                    .defaultSuccessUrl("/login/success")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
@@ -48,11 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
        // auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
         auth.userDetailsService(userService).passwordEncoder(NoOpPasswordEncoder.getInstance());
-//        auth.jdbcAuthentication().dataSource(dataSource)
-//                //.passwordEncoder(passwordEncoder())
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-//                .usersByUsernameQuery("select username, password, active from usr where username=?")
-//                .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?");
     }
 
 }

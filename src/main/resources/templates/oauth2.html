@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login page</title>
+    <link th:replace="parts/common::csshead">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:insert="parts/navbar::navbar"></div>
+<form th:action="@{/login}" method="post">
+    <h1 class="text-center">OAuth2 Log In</h1>
+</body>
+</html>
